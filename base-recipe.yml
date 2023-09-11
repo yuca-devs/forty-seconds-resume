@@ -1,0 +1,5 @@
+template: forty-seconds-resume
+user_data: en.yml
+post_cook:
+  - lualatex -file-line-error -synctex=1 -interaction=nonstopmode -recorder template.tex
+  - lualatex -file-line-error -synctex=1 -interaction=nonstopmode -recorder template.tex

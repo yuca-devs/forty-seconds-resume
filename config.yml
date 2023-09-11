@@ -1,0 +1,38 @@
+scape_format: latex
+
+template_files:
+  - template.tex
+  - fortysecondscv.cls
+
+overridable_files:
+  profile_picture: images/profile.jpg
+
+default_settings:
+  main_color: '0E5484'
+  side_color: 'E7E7E7'
+  section_color: '1E6494'
+  subsection_color: '1D1D1D'
+
+intl:
+  en:
+    experience_header: Working Experience
+    education_header: Education
+    projects_header: Relevant Projects
+    contacts_header: Contact
+    languages_header: Languages
+    skills_header: Skills
+    socials_header: Online Presence
+    selected_publications_header: 'Selected publications'
+    more_portflio_text: 'See more from my portfolio:'
+    more_publications_text: 'See all publications in:'
+  es:
+    experience_header: Experiencia Laboral
+    education_header: Educación
+    projects_header: Proyectos Relacionados
+    contacts_header: Información de contacto
+    languages_header: Idiomas
+    skills_header: Habilidades
+    socials_header: Perfiles Web
+    selected_publications_header: 'Publicaciones principales'
+    more_portflio_text: 'Ver más proyectos en mi sitio web:'
+    more_publications_text: 'Ver todas la publicaciones en:'
