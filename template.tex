@@ -49,6 +49,7 @@
 \usepackage{ragged2e}
 \usepackage{enumitem}
 \usepackage[Q=yes]{examplep}
+\usepackage[none]{hyphenat}
 
 % uncomment in case you don't want any hyphenation
 % \usepackage[none]{hyphenat}
@@ -89,50 +90,39 @@
 %-------------------------------------------------------------------------------
 %                            DEFINITION OF COMMANDS
 %-------------------------------------------------------------------------------
-\newcommand{\name}{
-    {{ personal.name }}
-}
-\newcommand{\lastname}{
-	{{ personal.last_name }}
-}
-\newcommand{\email}{
-    {{ personal.email }}
-}
-{% if 'website' in personal %}
-\newcommand{\website}{
-    {{ personal.website }}
-}
-{% endif %}
-\newcommand{\phone}{
-    {{ personal.phone }}
-}
-\newcommand{\slogan}{
-    {{ personal.slogan }}
-}
+\newcommand{\name}{ {{ personal.name }} }
+\newcommand{\lastname}{ {{ personal.last_name }} }
+{% if 'email' in personal %} \newcommand{\email}{ {{ personal.email }} } {% endif %}
+{% if 'website' in personal %} \newcommand{\website}{ {{ personal.website }} } {% endif %}
+{% if 'phone' in personal %} \newcommand{\phone}{ {{ personal.phone }} } {% endif %}
+{% if 'slogan' in personal %} \newcommand{\slogan}{ {{ personal.slogan }} } {% endif %}
 
 %-------------------------------------------------------------------------------
 %                            PERSONAL INFORMATION
 %-------------------------------------------------------------------------------
 %% mandatory information
-% your name
 \cvname{ \name }
 \cvlastname{ \lastname }
-% job title/career
+
+{% if 'slogan' in personal %}
 \cvjobtitle{ \slogan }
-% \cvjobtitle{Panda Scientist,\\[0.2em] Panda of the Year}
+{% endif %}
 
 %% optional information
-% profile picture
 \cvprofilepic{images/profile.jpg}
 
-% NOTE: ordering in sidebar will mimic the following order
-% date of birth
-% \cvbirthday{\today}
-% short address/location, use \newline if more than 1 line is required
+{% if 'birthday' in personal %}
+\cvbirthday{ {{ persona.birthday }} }
+{% endif %}
 
-% phone number
+{% if 'phone' in personal %}
 \cvphone{\phone}
+{% endif %}
+
+{% if 'email' in personal %}
 \cvaddress{\email}
+{% endif %}
+
 {% if 'website' in personal %}
 \cvsite{\website}
 {% endif %}
@@ -145,21 +135,25 @@
 	% naming according to ISO 3166-1 alpha-2 country codes
 	\graphicspath{ {images/flags/} }
 
-	\profilesection{\Large{ {{intl.languages_header}} } }
-	{% for l in languages %}
-	\pointskill{\flag{ {{languages[l].flag}}.png} }{ {{ languages[l].name }} }{ {{ languages[l].score }} }
-	{% endfor %}
+	{% if 'languages' is defined and languages|length > 0 %}
+		\profilesection{\Large{ {{intl.languages_header}} } }
+		{% for l in languages %}
+			\pointskill{\flag{ {{languages[l].flag}}.png} }{ {{ languages[l].name }} }{ {{ languages[l].score }} }
+		{% endfor %}
+	{% endif %}
 
 
-	\profilesection{\Large{ {{intl.skills_header}} } }
-	{% for category in skills %}
-	\textbf{\color{subsectioncolor} {{ category }} } \\
-	\vspace{2pt}
-	\begin{sidebarminipage}
-	\vspace{2pt}
-		{% for entry in skills[category] %}	\chartlabel{ {{ entry }} }	{% endfor %}		
-	\end{sidebarminipage}
-  {% endfor %}
+	{% if 'skills' is defined and skills|length > 0 %}
+		\profilesection{\Large{ {{intl.skills_header}} } }
+		{% for category in skills %}
+			\textbf{\color{subsectioncolor} {{ category }} } \\
+			\vspace{2pt}
+			\begin{sidebarminipage}
+			\vspace{2pt}
+				{% for entry in skills[category] %}	\chartlabel{ {{ entry }} }	{% endfor %}		
+			\end{sidebarminipage}
+		{% endfor %}
+	{% endif %}
 
 
 	% social network accounts incl. proper hyperlinks
@@ -175,24 +169,18 @@
 		\social{\faGithub}
 			{ {{ socials.github }} }
 			{ {\footnotesize  {{ socials.github }} } }
-		{% endif %}	
+		{% endif %}
 		{% if 'hackerrank' in socials %}
 			\social{\faHackerrank}
 			{ {{ socials.hackerrank }} }
 			{ {\footnotesize  {{ socials.hackerrank }} } }
-		{% endif %}		
+		{% endif %}
 		{% if 'twitter' in socials %}
 			\social{\faTwitter}
 			{ {{ socials.twitter }} }
 			{ {\footnotesize  {{ socials.twitter }} } }
-		{% endif %}	
+		{% endif %}
 	\end{icontable}
-
-  	% \profilesection{\Large{Cool image + text section}}
-	% \begin{memberships}
-	% 	\membership[4em]{pics/logo.png}{Some longer text spanning over more than
-	% 		only one line}
-	% \end{memberships}
 }
 
 %-------------------------------------------------------------------------------
@@ -202,53 +190,77 @@
 
 \makefrontsidebar
 
-% \vspace*{0.5em}
-% { \Huge \hfill \name{\fontsize{32pt}{36pt}\bfseries\lastname} } 
-% \vspace{2em}
+%-- EXPERIENCE -----------------------------------------------------------------
+
+{% if 'experience' is defined and experience|length > 0 %}
 \cvsection{ {{intl.experience_header}} }
 \begin{cvtable}[]
 	{% for entry in experience %}
-	\cvitem{ {{ entry.start_year }} -- {{ entry.end_year }} }{\textbf{
-{{entry.title}} } }{ {{ entry.institution}} }{ {\small 
-	\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
-		{% for hl in entry.highlights %} \item {{ hl}} {% endfor %}
-	\end{itemize} }
-	}
-	{% endfor %}	
+		\cvitem { {{ entry.start_year }} -- {{ entry.end_year }} } {\textbf{ {{entry.title}} } }
+			{ {{ entry.institution}} }
+			{ 
+				{\small
+				\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
+					{% for hl in entry.highlights %} \item {{ hl}} {% endfor %}
+				\end{itemize}
+				}
+			}
+	{% endfor %}
 \end{cvtable}
+{% endif %}
+
+%-- EDUCATION ------------------------------------------------------------------
+
+{% if 'education' is defined and education|length > 0 %}
 \cvsection{ {{intl.education_header}} }
 \begin{cvtable}[]
 	{% for entry in education %}
-	\cvitem{ {{ entry.start_year }} -- {{ entry.end_year }} }{\textbf{
-{{entry.degree}} } }{ {{ entry.institution}} }{}			
+		\cvitem
+			{ {{ entry.start_year }} -- {{ entry.end_year }} }
+			{\textbf{ {{entry.degree}} } }
+			{ {{ entry.institution}} }{}
 	{% endfor %}
 \end{cvtable}
+{% endif %}
+
+%-- PROJECTS -------------------------------------------------------------------
+
+{% if 'projects' is defined and projects|length > 0 %}
 \cvsection{ {{intl.projects_header}} }
 \begin{cvtable}[]
 	{% for entry in projects %}
-	\cvitem{ {{ entry.start_year }} -- {{ entry.end_year }} }{\textbf{
-{{entry.title}} } }{ {{entry.institution}} }{ {\small 
-	\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
-		{% for hl in entry.highlights %} \item {{ hl}} {% endfor %}
-	\end{itemize} }
-	\vspace{0.1em}
-	{% for skill in entry.skills %}	{ \chartlabel{ {{ skill }} } }	{% endfor %}		
-	}
-	{% endfor %}	
+		\cvitem
+			{ {{ entry.start_year }} -- {{ entry.end_year }} }
+			{\textbf{ {{entry.title}} } }
+			{ {{entry.institution}} }
+			{
+				\small 
+				\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
+					{% for hl in entry.highlights %} \item {{ hl }} {% endfor %}
+				\end{itemize}
+				\vspace{0.1em}
+				{% for skill in entry.skills %}	\chartlabel{ {{ skill }} } {% endfor %}
+			}
+	{% endfor %}
 \end{cvtable}
+{% endif %}
 
 {% if 'website' in personal %}
 {\scriptsize \color{gray}
 {{intl.more_portflio_text}} \href{ http://{{ personal.website }} }{ http://{{ personal.website }} }\\
 }
 {% endif %}
-\cvsection{ {{intl.selected_publications_header}} }
 
+%-- PUBLICATIONS ---------------------------------------------------------------
+
+{% if 'publications' is defined and publications|length > 0 %}
+\cvsection{ {{intl.selected_publications_header}} }
 \begin{cvtable}
 	{% for entry in publications %}
-	\cvpubitem{  {{ entry.title }}  }{ {{entry.venue}} } {} { {{ entry.year }} }	
-	{% endfor %}	
+		\cvpubitem{ {{entry.title}} }{ {{entry.coauthors}} }{ {{entry.venue}} }{ {{ entry.year }} }	
+	{% endfor %}
 \end{cvtable}
+{% endif %}
 
 {\scriptsize \color{gray}
 {{intl.more_publications_text}}\href{ {{ socials.googlescholar }} }{ {{ socials.googlescholar }} }\\

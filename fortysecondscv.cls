@@ -103,7 +103,7 @@
 \setlength{\profilepicrounding}{0.15\sidebarwidth}
 \DeclareOptionX{profilepicrounding}{\setlength{\profilepicrounding}{#1}}
 
-
+\def\trim#1{\ignorespaces#1\unskip}
 
 % show sidebar and page margins
 \newtoggle{tshowframes}
@@ -308,9 +308,9 @@
 \newcommand{\nameandjob}{
 	{\hfil\LARGE\color{maincolor}\cvname}\par
 	{\hfil\hspace{-.5\leftrightmargin}\Huge\color{maincolor}\bfseries\cvlastname}\par%
-	\setlength{\parskip}{2ex}
+	\setlength{\parskip}{1.2ex}
 	{\large\color{black!80}\cvjobtitle}\par%
-	\setlength{\parskip}{1ex}
+	\setlength{\parskip}{0.6ex}
 }
 
 \newcommand{\profileroundedcorners}{
@@ -657,11 +657,11 @@
 	\parbox[t]{0.17\textwidth}{\raggedright #1} &%
 	\parbox[t]{0.81\textwidth}{
 		\if\relax\detokenize{#4}\relax%
-			\parbox[t]{\linewidth-\widthof{\footnotesize #3}-1em}{\color{subsectioncolor}\raggedright #2}%
+			\parbox{\linewidth-\widthof{\footnotesize #3}-1em}{\color{subsectioncolor}\raggedright \trim{#2}}%
 		\hfill {\footnotesize#3}%
 		\else%
 			\parbox{\linewidth-\widthof{\footnotesize #3}-1em}{
-				\color{subsectioncolor}\raggedright \textbf{#2}%
+				\color{subsectioncolor}\raggedright \trim{\textbf{#2}}%
 			} \hfill {\footnotesize#3}%
 			\vspace{0.1em}
 			\textcolor{itemtextcolor}{#4}%\vspace{\parsep}%
@@ -677,7 +677,7 @@
 \newcommand{\cvpubitem}[4]{
 	\parbox[t]{0.17\textwidth}{\raggedright #4} &
 	\parbox[t]{0.81\textwidth}{
-		\textbf{\color{subsectioncolor}#1} \par \textit{#2} \par #3 \vspace{\parsep}%
+		\textbf{\color{subsectioncolor}\trim{#1}} \par \textit{#2} \par #3 \vspace{\parsep}%
 	}\\
 }
 
