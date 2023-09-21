@@ -4,6 +4,17 @@ template_files:
   - template.tex
   - fortysecondscv.cls
 
+jinja_config:
+  ".*\\.(tex|cls)":
+    block_start_string: '((*'
+    block_end_string: '*))'
+    variable_start_string: '((('
+    variable_end_string: ')))'
+    comment_start_string: '((='
+    comment_end_string: '))'
+    trim_blocks: true
+    lstrip_blocks: true
+
 overridable_files:
   profile_picture: images/profile.jpg
 
@@ -36,14 +47,3 @@ intl:
     selected_publications_header: 'Publicaciones principales'
     more_portflio_text: 'Ver más proyectos en mi sitio web:'
     more_publications_text: 'Ver todas la publicaciones en:'
-  it:
-    experience_header: Esperienze Lavorative
-    education_header: Istruzione
-    projects_header: Progetti Rilevanti
-    contacts_header: Contatti
-    languages_header: Lingue
-    skills_header: Competenze
-    socials_header: Presenza online
-    selected_publications_header: 'Pubblicazioni selezionate'
-    more_portflio_text: 'Guarda altri lavori nel mio portfolio:'
-    more_publications_text: 'Guarda tutte le pubblicazioni su:'

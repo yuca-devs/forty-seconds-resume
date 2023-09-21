@@ -50,10 +50,10 @@
 ]{geometry}
 
 % pre-define some colors the user can choose from
-\definecolor{cv_maincolor}{HTML}{ {{ settings.main_color }} }
-\definecolor{cvsidecolor}{HTML}{ {{ settings.side_color }} }
-\definecolor{cvsectioncolor}{HTML}{ {{ settings.section_color }}}
-\definecolor{cvsubsectioncolor}{HTML}{ {{ settings.subsection_color }}}
+\definecolor{cv_maincolor}{HTML}{((( settings.main_color )))}
+\definecolor{cvsidecolor}{HTML}{((( settings.side_color )))}
+\definecolor{cvsectioncolor}{HTML}{((( settings.section_color )))}
+\definecolor{cvsubsectioncolor}{HTML}{((( settings.subsection_color )))}
 % set default values
 \colorlet{maincolor}{cv_maincolor}
 \colorlet{sidecolor}{cvsidecolor}
@@ -601,7 +601,7 @@
 		% name and job
 		\nameandjob
 
-		\profilesection{\Large{ {{intl.contacts_header}} } }
+		\profilesection{\Large{((( intl.contacts_header )))}}
 		% personal information
 		\vspace{-2pt}
 		\begin{icontable}[1.6]{1.7em}{0.4em}

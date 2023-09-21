@@ -88,182 +88,188 @@
 }
 
 %-------------------------------------------------------------------------------
-%                            DEFINITION OF COMMANDS
-%-------------------------------------------------------------------------------
-\newcommand{\name}{ {{ personal.name }} }
-\newcommand{\lastname}{ {{ personal.last_name }} }
-{% if 'email' in personal %} \newcommand{\email}{ {{ personal.email }} } {% endif %}
-{% if 'website' in personal %} \newcommand{\website}{ {{ personal.website }} } {% endif %}
-{% if 'phone' in personal %} \newcommand{\phone}{ {{ personal.phone }} } {% endif %}
-{% if 'slogan' in personal %} \newcommand{\slogan}{ {{ personal.slogan }} } {% endif %}
-
-%-------------------------------------------------------------------------------
 %                            PERSONAL INFORMATION
 %-------------------------------------------------------------------------------
 %% mandatory information
-\cvname{ \name }
-\cvlastname{ \lastname }
+\cvname{((( personal.name )))}
+\cvlastname{((( personal.last_name )))}
 
-{% if 'slogan' in personal %}
-\cvjobtitle{ \slogan }
-{% endif %}
+((* if 'slogan' in personal *))
+\cvjobtitle{((( personal.slogan )))}
+((* endif *))
 
 %% optional information
 \cvprofilepic{images/profile.jpg}
 
-{% if 'birthday' in personal %}
-\cvbirthday{ {{ persona.birthday }} }
-{% endif %}
+((* if 'birthday' in personal *))
+\cvbirthday{((( persona.birthday )))}
+((* endif *))
 
-{% if 'phone' in personal %}
-\cvphone{\phone}
-{% endif %}
+((* if 'phone' in personal *))
+\cvphone{((( personal.phone )))}
+((* endif *))
 
-{% if 'email' in personal %}
-\cvaddress{\email}
-{% endif %}
+((* if 'email' in personal *))
+\cvaddress{((( personal.email )))}
+((* endif *))
 
-{% if 'website' in personal %}
-\cvsite{\website}
-{% endif %}
+((* if 'website' in personal *))
+\cvsite{((( personal.website )))}
+((* endif *))
 
-%-------------------------------------------------------------------------------
+%===============================================================================
 %                              SIDEBAR 1st PAGE
-%-------------------------------------------------------------------------------
+%===============================================================================
 \addtofrontsidebar{
 	% include gosquare national flags from https://github.com/gosquared/flags;
 	% naming according to ISO 3166-1 alpha-2 country codes
-	\graphicspath{ {images/flags/} }
+	\graphicspath{{images/flags/}}
 
-	{% if 'languages' is defined and languages|length > 0 %}
-		\profilesection{\Large{ {{intl.languages_header}} } }
-		{% for l in languages %}
-			\pointskill{\flag{ {{languages[l].flag}}.png} }{ {{ languages[l].name }} }{ {{ languages[l].score }} }
-		{% endfor %}
-	{% endif %}
+	((* if defined_and_not_empty('languages') *))
+		\profilesection{\Large{(((intl.languages_header)))}}
+		((* for l in languages *))
+			\pointskill
+				{\flag{(((languages[l].flag))).png}}
+				{((( languages[l].name )))}
+				{((( languages[l].score )))}
+		((* endfor *))
+	((* endif *))
 
 
-	{% if 'skills' is defined and skills|length > 0 %}
-		\profilesection{\Large{ {{intl.skills_header}} } }
-		{% for category in skills %}
-			\textbf{\color{subsectioncolor} {{ category }} } \\
+	((* if defined_and_not_empty('skills') *))
+		\profilesection{\Large{((( intl.skills_header )))}}
+		((* for category in skills *))
+			\textbf{\color{subsectioncolor}((( category )))}\\
 			\vspace{2pt}
 			\begin{sidebarminipage}
 			\vspace{2pt}
-				{% for entry in skills[category] %}	\chartlabel{ {{ entry }} }	{% endfor %}		
+				((* for entry in skills[category] *)) \chartlabel{((( entry )))} ((* endfor *))
 			\end{sidebarminipage}
-		{% endfor %}
-	{% endif %}
+		((* endfor *))
+	((* endif *))
 
 
 	% social network accounts incl. proper hyperlinks
-	\graphicspath{ {images/socials/} }
-	\profilesection{\Large{ {{intl.socials_header}} }}
+	\graphicspath{{images/socials/}}
+	\profilesection{\Large{((( intl.socials_header )))}}
 	\begin{icontable}{1.5em}{0em}
-		{% if 'linkedin' in socials %}
+		((* if 'linkedin' in socials *))
 		\social{\faLinkedin}
-			{ {{ socials.linkedin }} }
-			{ {\footnotesize {{ socials.linkedin }} } }
-		{% endif %}
-		{% if 'github' in socials %}
+			{((( socials.linkedin )))}
+			{{\footnotesize ((( socials.linkedin )))}}
+		((* endif *))
+		((* if 'github' in socials *))
 		\social{\faGithub}
-			{ {{ socials.github }} }
-			{ {\footnotesize  {{ socials.github }} } }
-		{% endif %}
-		{% if 'hackerrank' in socials %}
+			{((( socials.github )))}
+			{{\footnotesize ((( socials.github )))}}
+		((* endif *))
+		((* if 'hackerrank' in socials *))
 			\social{\faHackerrank}
-			{ {{ socials.hackerrank }} }
-			{ {\footnotesize  {{ socials.hackerrank }} } }
-		{% endif %}
-		{% if 'twitter' in socials %}
+			{((( socials.hackerrank ))) }
+			{{\footnotesize ((( socials.hackerrank )))}}
+		((* endif *))
+		((* if 'twitter' in socials *))
 			\social{\faTwitter}
-			{ {{ socials.twitter }} }
-			{ {\footnotesize  {{ socials.twitter }} } }
-		{% endif %}
+			{((( socials.twitter )))}
+			{{\footnotesize ((( socials.twitter )))}}
+		((* endif *))
 	\end{icontable}
 }
 
-%-------------------------------------------------------------------------------
+%===============================================================================
 %                         TABLE ENTRIES RIGHT COLUMN
-%-------------------------------------------------------------------------------
+%===============================================================================
 \begin{document}
 
 \makefrontsidebar
 
-%-- EXPERIENCE -----------------------------------------------------------------
-
-{% if 'experience' is defined and experience|length > 0 %}
-\cvsection{ {{intl.experience_header}} }
-\begin{cvtable}[]
-	{% for entry in experience %}
-		\cvitem { {{ entry.start_year }} -- {{ entry.end_year }} } {\textbf{ {{entry.title}} } }
-			{ {{ entry.institution}} }
+((* if defined_and_not_empty('experience') *))
+%-------------------------------------------------------------------------------
+% EXPERIENCE
+%-------------------------------------------------------------------------------
+\cvsection{((( intl.experience_header )))}
+\begin{cvtable}
+	((* for entry in experience *))
+		\cvitem
+			{((( entry.start_year ))) -- ((( entry.end_year )))}
+			{\textbf{((( entry.title )))}}
+			{((( entry.institution)))}
 			{ 
 				{\small
 				\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
-					{% for hl in entry.highlights %} \item {{ hl}} {% endfor %}
+					((* for hl in entry.highlights *)) \item ((( hl))) ((* endfor *))
 				\end{itemize}
 				}
 			}
-	{% endfor %}
+	((* endfor *))
 \end{cvtable}
-{% endif %}
+((* endif *))
 
-%-- EDUCATION ------------------------------------------------------------------
-
-{% if 'education' is defined and education|length > 0 %}
-\cvsection{ {{intl.education_header}} }
-\begin{cvtable}[]
-	{% for entry in education %}
+((* if defined_and_not_empty('education') *))
+%-------------------------------------------------------------------------------
+% EDUCATION
+%-------------------------------------------------------------------------------
+\cvsection{((( intl.education_header )))}
+\begin{cvtable}
+	((* for entry in education *))
 		\cvitem
-			{ {{ entry.start_year }} -- {{ entry.end_year }} }
-			{\textbf{ {{entry.degree}} } }
-			{ {{ entry.institution}} }{}
-	{% endfor %}
+			{((( entry.start_year ))) -- ((( entry.end_year )))}
+			{\textbf{((( entry.degree )))}}
+			{((( entry.institution)))}
+			{}
+	((* endfor *))
 \end{cvtable}
-{% endif %}
+((* endif *))
 
-%-- PROJECTS -------------------------------------------------------------------
-
-{% if 'projects' is defined and projects|length > 0 %}
-\cvsection{ {{intl.projects_header}} }
-\begin{cvtable}[]
-	{% for entry in projects %}
+((* if defined_and_not_empty('projects') *))
+%-------------------------------------------------------------------------------
+% PROJECTS
+%-------------------------------------------------------------------------------
+\cvsection{((( intl.projects_header )))}
+\begin{cvtable}
+	((* for entry in projects *))
 		\cvitem
-			{ {{ entry.start_year }} -- {{ entry.end_year }} }
-			{\textbf{ {{entry.title}} } }
-			{ {{entry.institution}} }
+			{((( entry.start_year ))) -- ((( entry.end_year )))}
+			{\textbf{((( entry.title )))}}
+			{((( entry.institution )))}
 			{
 				\small 
 				\begin{itemize}[topsep=0pt,itemsep=0pt,leftmargin=*]
-					{% for hl in entry.highlights %} \item {{ hl }} {% endfor %}
+					((* for hl in entry.highlights *)) \item ((( hl ))) ((* endfor *))
 				\end{itemize}
 				\vspace{0.1em}
-				{% for skill in entry.skills %}	\chartlabel{ {{ skill }} } {% endfor %}
+				((* for skill in entry.skills *)) \chartlabel{((( skill )))} ((* endfor *))
 			}
-	{% endfor %}
+	((* endfor *))
 \end{cvtable}
-{% endif %}
+((* endif *))
 
-{% if 'website' in personal %}
-{\scriptsize \color{gray}
-{{intl.more_portflio_text}} \href{ http://{{ personal.website }} }{ http://{{ personal.website }} }\\
+((* if 'website' in personal *))
+{
+	\scriptsize \color{gray}
+	((( intl.more_portflio_text ))) \href{http://((( personal.website )))}{http://((( personal.website )))}\\
 }
-{% endif %}
+((* endif *))
 
-%-- PUBLICATIONS ---------------------------------------------------------------
-
-{% if 'publications' is defined and publications|length > 0 %}
-\cvsection{ {{intl.selected_publications_header}} }
+((* if defined_and_not_empty('publications') *))
+%-------------------------------------------------------------------------------
+% PUBLICATIONS
+%-------------------------------------------------------------------------------
+\cvsection{((( intl.selected_publications_header )))}
 \begin{cvtable}
-	{% for entry in publications %}
-		\cvpubitem{ {{entry.title}} }{ {{entry.coauthors}} }{ {{entry.venue}} }{ {{ entry.year }} }	
-	{% endfor %}
+	((* for entry in publications *))
+		\cvpubitem
+			{((( entry.title )))}
+			{((( entry.coauthors )))}
+			{((( entry.venue )))}
+			{((( entry.year )))}
+	((* endfor *))
 \end{cvtable}
-{% endif %}
+((* endif *))
 
-{\scriptsize \color{gray}
-{{intl.more_publications_text}}\href{ {{ socials.googlescholar }} }{ {{ socials.googlescholar }} }\\
+{
+	\scriptsize \color{gray}
+	((( intl.more_publications_text ))) \href{((( socials.googlescholar )))}{((( socials.googlescholar )))}\\
 }
 
 
